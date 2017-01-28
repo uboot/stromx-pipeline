@@ -1,0 +1,16 @@
+[submodule "stromx"]
+	path = stromx
+	url = https://github.com/uboot/stromx.git
+	shallow = true
+[submodule "stromx-opencv"]
+	path = stromx-opencv
+	url = https://github.com/uboot/stromx-opencv.git
+	shallow = true
+[submodule "stromx-zbar"]
+	path = stromx-zbar
+	url = https://github.com/uboot/stromx-zbar.git
+	shallow = true
+[submodule "stromx-web"]
+	path = stromx-web
+	url = https://github.com/uboot/stromx-web.git
+	shallow = true
