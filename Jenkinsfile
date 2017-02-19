@@ -7,11 +7,8 @@ node('raspi') {
     
     stage('stromx') {
         dir('stromx') {
-            sh 'git checkout debian/changelog'
+            patchVersion(sha)
             sh 'git checkout debian/control'
-            withEnv(['SHA=' + sha.replaceAll("\\s","") + "-" + env.BUILD_ID]) {
-                sh 'sed -i.bak -r "s/\\(([0-9].[0-9].[0-9])\\)/(\\1-${SHA})/" debian/changelog'
-            }
             sh 'sed -i.bak s/libboost-all-dev,// debian/control'
             sh 'sed -i.bak s/doxygen,// debian/control'
             sh 'sed -i.bak /stromx-doc/,+5d debian/control'
@@ -22,23 +19,39 @@ node('raspi') {
     
     stage('stromx-opencv') {
         dir('stromx-opencv') {
-            sh 'git checkout debian/changelog'
-            withEnv(['SHA=' + sha.replaceAll("\\s","") + "-" + env.BUILD_ID]) {
-                sh 'sed -i.bak -r "s/\\(([0-9].[0-9].[0-9])\\)/(\\1-${SHA})/" debian/changelog'
-            }
+            patchVersion(sha)
             sh 'dpkg-buildpackage -j4 -us -uc'
         }
     }
     
     stage('stromx-zbar') {
         dir('stromx-zbar') {
-            sh 'git checkout debian/changelog'
-            withEnv(['SHA=' + sha.replaceAll("\\s","") + "-" + env.BUILD_ID]) {
-                sh 'sed -i.bak -r "s/\\(([0-9].[0-9].[0-9])\\)/(\\1-${SHA})/" debian/changelog'
-            }
+            patchVersion(sha)
+            sh 'dpkg-buildpackage -j4 -us -uc'
+        }
+    }
+    
+    stage('stromx-raspi') {
+        dir('stromx-raspi') {
+            patchVersion(sha)
+            sh 'dpkg-buildpackage -j4 -us -uc'
+        }
+    }
+    
+    stage('stromx-web') {
+        dir('stromx-web') {
+            patchVersion(sha)
             sh 'dpkg-buildpackage -j4 -us -uc'
         }
     }
     
     stash includes: '*.deb', name: 'stromx'
+}
+
+def patchVersion(String sha) {
+    sh 'git checkout debian/changelog'
+    withEnv(['SHA=' + sha.replaceAll("\\s","") + "-" + env.BUILD_ID]) {
+        sh """sed -i.bak -r 's/\\(([0-9].[0-9].[0-9])\\)/(\\1-${SHA})/'\
+              debian/changelog"""
+    }
 }
