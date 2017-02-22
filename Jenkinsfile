@@ -38,6 +38,13 @@ node('raspi') {
         }
     }
     
+    stage('stromx-sl') {
+        dir('stromx-sl') {
+            patchVersion(sha)
+            sh 'dpkg-buildpackage -j4 -us -uc'
+        }
+    }
+    
     stage('stromx-web') {
         dir('stromx-web') {
             patchVersion(sha)
