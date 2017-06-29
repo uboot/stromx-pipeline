@@ -1,4 +1,4 @@
-node('raspi') {
+node('raspi-build') {
     sh 'rm -f *.deb'
     sh 'sudo dpkg --remove libstromx libstromx-dev python-stromx'
     git 'https://github.com/uboot/stromx-pipeline.git'
@@ -46,6 +46,13 @@ node('raspi') {
     }
     
     stash includes: '*.deb', name: 'stromx'
+}
+
+node('raspi-deploy') {
+    stage('deploy') {
+        unstash name: 'stromx'
+        sh 'ls'
+    }
 }
 
 def patchVersion(String sha) {
