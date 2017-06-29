@@ -18,7 +18,3 @@
 	path = stromx-raspi
 	url = https://github.com/uboot/stromx-raspi.git
 	shallow = true
-[submodule "stromx-sl"]
-	path = stromx-sl
-	url = https://github.com/uboot/stromx-sl.git
-	shallow = true
