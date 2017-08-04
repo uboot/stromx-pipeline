@@ -50,6 +50,7 @@ node('raspi-build') {
 
 node('raspi-deploy') {
     stage('deploy') {
+        sh 'rm *.deb'
         unstash name: 'stromx'
         sh 'ls'
     }
