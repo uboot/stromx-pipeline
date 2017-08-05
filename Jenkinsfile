@@ -50,10 +50,12 @@ node('raspi-build') {
 
 node('raspi-deploy') {
     stage('deploy') {
+        sh returnStatus: true, script: 'stromx-server stop'
         sh 'sudo dpkg --remove libstromx python-stromx libstromx-opencv libstromx-zbar libstromx-raspi stromx-web'
         sh 'rm -f *.deb'
         unstash name: 'stromx'
         sh 'sudo dpkg --install libstromx_*.deb python-stromx_*.deb libstromx-opencv_*.deb libstromx-zbar_*.deb libstromx-raspi_*.deb stromx-web_*.deb'
+        sh 'stromx-server start'
     }
 }
 
