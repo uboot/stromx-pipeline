@@ -1,5 +1,5 @@
 node('raspi-build') {
-    sh 'rm -f *.deb'
+    sh 'rm -f *.deb *.tar.gz *.changes *.dsc'
     sh 'sudo dpkg --remove libstromx libstromx-dev python-stromx'
     git 'https://github.com/uboot/stromx-pipeline.git'
     sh 'git submodule update --init --recursive'
