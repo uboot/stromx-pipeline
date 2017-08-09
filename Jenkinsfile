@@ -45,7 +45,7 @@ node('raspi-build') {
         }
     }
 
-    stash includes: '*.deb', name: 'stromx'
+    stash includes: '*.deb, stromx.conf', name: 'stromx'
 }
 
 node('raspi-deploy') {
@@ -55,6 +55,7 @@ node('raspi-deploy') {
         sh 'rm -f *.deb'
         unstash name: 'stromx'
         sh 'sudo dpkg --install libstromx_*.deb python-stromx_*.deb libstromx-opencv_*.deb libstromx-zbar_*.deb libstromx-raspi_*.deb stromx-web_*.deb'
+        sh 'sudo cp stromx.conf /etc/stromx'
         sh 'stromx-server start'
     }
 }
